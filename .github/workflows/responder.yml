@@ -1,11 +1,12 @@
-name: Remote Dispatch Action Responder
- 
-on: [repository_dispatch]
- 
+name: Repository Dispatch
+on:
+  repository_dispatch:
+    types: [tests]
 jobs:
-  ping-pong:
+  tests:
     runs-on: ubuntu-latest
     steps:
-      - name: Event Information
-        run: |
-          echo "Event '${{ github.event.action }}' received from '${{ github.event.client_payload.repository }}'"
+      - name: Dump the client payload context
+        env:
+          PAYLOAD_CONTEXT: ${{ toJson(github.event.client_payload) }}
+        run: echo "$PAYLOAD_CONTEXT"
